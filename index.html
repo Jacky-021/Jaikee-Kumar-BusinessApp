@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RakeLink | Rail freight booking and tracking</title>
+  <meta name="description" content="RakeLink books wagons, rakes and containers on Indian Railways and tracks every consignment from the loading siding to the destination terminal.">
+  <meta name="theme-color" content="#0F2236">
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#home" aria-label="RakeLink, go to home">
+        <img src="images/logo.svg" alt="" width="36" height="36">
+        <span>RakeLink</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Menu</span>
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+      </button>
+
+      <nav id="site-nav" class="site-nav" aria-label="Main">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#track">Track</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ===================== 1. HOME ===================== -->
+    <section id="home" class="hero">
+      <div class="wrap hero-copy">
+        <h1>Book rail freight. Know where every wagon is.</h1>
+        <p class="lead">RakeLink helps factories, traders and exporters book wagons, rakes and containers on Indian Railways, then follow each consignment from the loading siding to the destination terminal.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#services">Get Started</a>
+          <a class="btn btn-ghost" href="#track">Track a consignment</a>
+        </div>
+        <p class="hero-note">Based in Vadodara, Gujarat. Serving Gujarat, Maharashtra, Madhya Pradesh and the Western Dedicated Freight Corridor.</p>
+      </div>
+      <div class="hero-rail">
+        <img class="hero-train" src="images/hero-train.svg" alt="" width="1240" height="200">
+      </div>
+    </section>
+
+    <!-- ===================== 2. ABOUT ===================== -->
+    <section id="about" class="section">
+      <div class="wrap about-grid">
+        <div>
+          <h2>One booking desk for the whole rail journey</h2>
+          <p class="section-lead">Most small and mid-size shippers have no railway siding of their own and no team that knows freight tariffs. RakeLink is that team.</p>
+
+          <dl class="facts-list">
+            <div>
+              <dt>What we do</dt>
+              <dd>We register wagon demand with Indian Railways, handle the railway receipt and freight payment, arrange trucks to and from the siding, and share live status until the cargo is delivered.</dd>
+            </div>
+            <div>
+              <dt>Who we serve</dt>
+              <dd>Steel, cement and fertiliser makers, agri-commodity traders, exporters moving containers to ports, and small shippers who book less than a full wagon.</dd>
+            </div>
+            <div>
+              <dt>Where we operate</dt>
+              <dd>Gujarat, Maharashtra and Madhya Pradesh, long-haul lanes from Jamshedpur and Korba into Gujarat, and port lanes to Mundra and JN Port.</dd>
+            </div>
+            <div>
+              <dt>Why customers choose us</dt>
+              <dd>One booking, one tracking page and one invoice for the rail and road legs together. Customers spend less time chasing wagons and more time running the plant.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <figure class="network">
+          <img src="images/network-map.svg" alt="Schematic map of RakeLink core rail lanes linking Jamshedpur, Korba, Katni, Nagpur, Surat, Vadodara, Ahmedabad, Mundra, JN Port and Dadri" width="600" height="310">
+          <figcaption>Our core lanes. The amber line is the Western Dedicated Freight Corridor from JN Port to Dadri.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== 3. SERVICES ===================== -->
+    <section id="services" class="section section--tint">
+      <div class="wrap">
+        <h2>Services and prices</h2>
+        <p class="section-lead">Pick the service that matches your load, then book it from the Contact section. Prices are indicative starting rates.</p>
+
+        <div class="table-scroll">
+          <table class="price-table">
+            <thead>
+              <tr>
+                <th scope="col">Service</th>
+                <th scope="col">What you get</th>
+                <th scope="col">Starting price</th>
+                <th scope="col"><span class="sr-only">Book</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Full wagon load</td>
+                <td>One wagon of about 60 tonnes between any two goods sheds or sidings.</td>
+                <td class="price">₹35,000 per wagon<span class="price-note">about 400 km</span></td>
+                <td><a class="btn btn-outline" href="#contact" data-service="Full wagon load">Book this service</a></td>
+              </tr>
+              <tr>
+                <td>Part load</td>
+                <td>For shipments under 10 tonnes. Your cargo shares a wagon with others on the same lane.</td>
+                <td class="price">₹1,400 per tonne</td>
+                <td><a class="btn btn-outline" href="#contact" data-service="Part load">Book this service</a></td>
+              </tr>
+              <tr>
+                <td>Full rake</td>
+                <td>A full train of about 58 wagons (around 3,500 tonnes) with a dedicated rake coordinator.</td>
+                <td class="price">₹16,00,000 per rake<span class="price-note">about 400 km</span></td>
+                <td><a class="btn btn-outline" href="#contact" data-service="Full rake">Book this service</a></td>
+              </tr>
+              <tr>
+                <td>Container by rail</td>
+                <td>20-ft and 40-ft containers between Mundra, JN Port and inland container depots.</td>
+                <td class="price">₹20,000 per 20-ft container</td>
+                <td><a class="btn btn-outline" href="#contact" data-service="Container by rail">Book this service</a></td>
+              </tr>
+              <tr>
+                <td>First and last mile trucking</td>
+                <td>Truck pickup from your plant to the siding and delivery from the destination terminal.</td>
+                <td class="price">₹45 per km</td>
+                <td><a class="btn btn-outline" href="#contact" data-service="First and last mile trucking">Book this service</a></td>
+              </tr>
+              <tr>
+                <td>Tracking and documents</td>
+                <td>Live status page, railway receipt handling and SMS alerts when a consignment is delayed.</td>
+                <td class="price">₹500 per booking</td>
+                <td><a class="btn btn-outline" href="#contact" data-service="Tracking and documents">Book this service</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="fineprint">Prices are illustrative for this class exercise. Real rates depend on distance, commodity class and the railway tariff in force.</p>
+      </div>
+    </section>
+
+    <!-- ===================== 4. DASHBOARD ===================== -->
+    <section id="dashboard" class="section">
+      <div class="wrap section-head">
+        <div>
+          <h2>Operations dashboard</h2>
+          <p class="section-lead">What the operations manager needs to know first thing in the morning.</p>
+        </div>
+        <p class="period">September 2026. Sample data for the class exercise.</p>
+      </div>
+
+      <div class="kpi-band">
+        <div class="wrap">
+          <ul class="kpis">
+            <li class="kpi">
+              <span class="kpi-value">1,250</span>
+              <span class="kpi-label">Total bookings</span>
+              <span class="kpi-note">Wagon, rake and container bookings this month</span>
+            </li>
+            <li class="kpi kpi--good">
+              <span class="kpi-value">1,080</span>
+              <span class="kpi-label">Delivered</span>
+              <span class="kpi-note">86.4% of bookings</span>
+            </li>
+            <li class="kpi kpi--transit">
+              <span class="kpi-value">120</span>
+              <span class="kpi-label">In transit</span>
+              <span class="kpi-note">9.6% of bookings</span>
+            </li>
+            <li class="kpi kpi--delayed">
+              <span class="kpi-value">50</span>
+              <span class="kpi-label">Delayed</span>
+              <span class="kpi-note">4.0% of bookings</span>
+            </li>
+            <li class="kpi kpi--good">
+              <span class="kpi-value">91.5%</span>
+              <span class="kpi-label">On-time delivery</span>
+              <span class="kpi-note">988 of 1,080 delivered by the promised date</span>
+            </li>
+            <li class="kpi">
+              <span class="kpi-value">4.2</span>
+              <span class="kpi-label">Wagon turnaround (days)</span>
+              <span class="kpi-note">Average time from placement to release</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="wrap dash-grid">
+        <section class="panel panel--wide" aria-labelledby="h-monthly">
+          <h3 id="h-monthly">Bookings per month</h3>
+          <div id="chart-monthly"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="h-mix">
+          <h3 id="h-mix">Cargo mix by tonnage</h3>
+          <div id="chart-mix" class="mix"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="h-delay">
+          <h3 id="h-delay">Why <span id="delay-total">50</span> consignments are delayed</h3>
+          <div id="chart-delay"></div>
+        </section>
+
+        <aside class="panel panel--wide panel--attention" aria-labelledby="h-attention">
+          <h3 id="h-attention">Needs attention today</h3>
+          <ul class="attention-list">
+            <li>
+              <p><strong>50 consignments are delayed.</strong> Terminal congestion causes 18 of them, the largest single cause.</p>
+              <a class="text-link" href="#track" data-track="TRK1018">Open delayed consignment TRK1018</a>
+            </li>
+            <li>
+              <p><strong>Wagon shortage caused 12 delays.</strong> Request extra wagon allotment on the Korba to Surat coal lane before the weekend.</p>
+              <a class="text-link" href="#services">See rake booking options</a>
+            </li>
+            <li>
+              <p><strong>120 consignments are in transit.</strong> Follow a live one to see what customers see.</p>
+              <a class="text-link" href="#track" data-track="TRK1025">Open in-transit consignment TRK1025</a>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== 5. TRACK (interactive feature) ===================== -->
+    <section id="track" class="section section--tint">
+      <div class="wrap">
+        <h2>Track a consignment</h2>
+        <p class="section-lead">Enter the consignment ID from your booking confirmation to see where your wagons are and when they will arrive.</p>
+
+        <form id="track-form" class="track-form" novalidate>
+          <label for="track-id">Consignment ID</label>
+          <div class="track-row">
+            <input id="track-id" name="id" type="text" placeholder="For example, TRK1025" autocomplete="off" maxlength="12">
+            <button class="btn btn-dark" type="submit">Track consignment</button>
+          </div>
+          <div class="chips">
+            <span>Try a sample:</span>
+            <span id="track-samples" class="chip-list"></span>
+          </div>
+        </form>
+
+        <div id="track-result" class="track-result" aria-live="polite">
+          <p class="empty">Your consignment status will appear here.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 6. CONTACT ===================== -->
+    <section id="contact" class="section">
+      <div class="wrap contact-grid">
+        <div>
+          <h2>Talk to the booking desk</h2>
+          <p class="section-lead">Tell us the cargo, route and quantity. We reply with a rate and wagon availability within one working day.</p>
+
+          <dl class="contact-list">
+            <div>
+              <dt>Email</dt>
+              <dd><a class="text-link" href="mailto:jaikee.kumar_mba25@gsv.ac.in?subject=Rail%20freight%20enquiry">jaikee.kumar_mba25@gsv.ac.in</a></dd>
+            </div>
+            <div>
+              <dt>Phone</dt>
+              <dd><a class="text-link" href="tel:+919000012345">+91 74889 91657</a></dd>
+            </div>
+            <div>
+              <dt>Office</dt>
+              <dd>RakeLink Freight Services, Station Road Business Centre, Vadodara, Gujarat 390002<br>
+                <a class="text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Vadodara+Junction+Railway+Station" target="_blank" rel="noopener noreferrer">Get directions on Google Maps</a>
+              </dd>
+            </div>
+            <div>
+              <dt>Hours</dt>
+              <dd>Monday to Saturday, 9:30 am to 6:30 pm IST</dd>
+            </div>
+            <div>
+              <dt>LinkedIn</dt>
+              <dd><a class="text-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">jaikee-kumar-826199311</a></dd>
+            </div>
+          </dl>
+
+          <iframe class="map-frame" title="Map showing the RakeLink office near Vadodara Junction" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Vadodara+Junction+Railway+Station&amp;output=embed"></iframe>
+        </div>
+
+        <form id="enquiry-form" class="enquiry" novalidate>
+          <h3>Send an enquiry</h3>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="f-name">Your name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name">
+              <span class="error" data-error-for="name"></span>
+            </div>
+            <div class="field">
+              <label for="f-company">Company (optional)</label>
+              <input id="f-company" name="company" type="text" autocomplete="organization">
+              <span class="error" data-error-for="company"></span>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email">
+              <span class="error" data-error-for="email"></span>
+            </div>
+            <div class="field">
+              <label for="f-phone">Phone (optional)</label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="10-digit mobile number">
+              <span class="error" data-error-for="phone"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-service">Service</label>
+            <select id="f-service" name="service">
+              <option value="">Choose a service</option>
+              <option>Full wagon load</option>
+              <option>Part load</option>
+              <option>Full rake</option>
+              <option>Container by rail</option>
+              <option>First and last mile trucking</option>
+              <option>Tracking and documents</option>
+            </select>
+            <span class="error" data-error-for="service"></span>
+          </div>
+
+          <div class="field">
+            <label for="f-message">Cargo, route and quantity</label>
+            <textarea id="f-message" name="message" rows="4" placeholder="For example: 120 tonnes of steel coils, Jamshedpur to Vadodara, loading from 10 October"></textarea>
+            <span class="error" data-error-for="message"></span>
+          </div>
+
+          <button class="btn btn-dark" type="submit">Send enquiry</button>
+          <div id="form-status" class="form-status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <p class="footer-brand"><img src="images/logo.svg" alt="" width="32" height="32"> RakeLink</p>
+        <p>Rail freight booking and tracking for shippers who do not have their own siding.</p>
+      </div>
+
+      <div>
+        <h2 class="footer-h">Rail references we rely on</h2>
+        <ul class="ref-list">
+          <li>
+            <a href="https://www.fois.indianrail.gov.in/" target="_blank" rel="noopener noreferrer">Freight Operations Information System (FOIS)</a>
+            <span>Register wagon demand and check official consignment status.</span>
+          </li>
+          <li>
+            <a href="https://www.fois.indianrail.gov.in/RailSAHAY/index.jsp" target="_blank" rel="noopener noreferrer">Freight Business Development portal</a>
+            <span>Look up routes and distances before quoting a customer.</span>
+          </li>
+          <li>
+            <a href="https://dfccil.com/" target="_blank" rel="noopener noreferrer">Dedicated Freight Corridor Corporation (DFCCIL)</a>
+            <span>Check corridor details for our JN Port to Dadri container lane.</span>
+          </li>
+          <li>
+            <a href="https://indianrailways.gov.in/" target="_blank" rel="noopener noreferrer">Indian Railways</a>
+            <span>Read freight circulars and tariff updates that change our rates.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer-h">Jump to</h2>
+        <ul class="ref-list">
+          <li><a href="#services">Services and prices</a></li>
+          <li><a href="#dashboard">Operations dashboard</a></li>
+          <li><a href="#track">Track a consignment</a></li>
+          <li><a href="#contact">Contact and enquiry</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="wrap footer-base">
+      <p>ITBT live class exercise by Jaikee Kumar, MBA (Logistics and Supply Chain Management), Gati Shakti Vishwavidyalaya, Vadodara. The company, prices, contacts and all dashboard data are fictional.</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
