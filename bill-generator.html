@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Generate a bill | RakeLink</title>
+<link rel="icon" href="images/logo.svg">
+<style>
+:root{--navy:#0F2236;--amber:#E39A1B;--ink:#1c2733;--muted:#5d6b79;--line:#d8dee5;--bg:#eef2f5}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.5 "Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+.topbar{background:var(--navy)}
+.topbar .in{max-width:1200px;margin:auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700;font-size:1.1rem}
+.brand img{height:32px;width:auto}
+.back{color:#f6d28a}
+.layout{max-width:1200px;margin:0 auto;padding:24px 20px 48px;display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:24px;align-items:start}
+@media(max-width:900px){.layout{grid-template-columns:minmax(0,1fr)}}
+.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px}
+.panel h1{font-size:1.4rem;margin:0 0 4px}
+.panel h2{font-size:1rem;margin:22px 0 10px;padding-top:16px;border-top:1px solid var(--line)}
+.panel p.lead{margin:0;color:var(--muted)}
+label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:12px}
+input,select,textarea{display:block;width:100%;margin-top:4px;font:inherit;font-size:1rem;padding:8px 10px;border:1px solid #b9c3cd;border-radius:6px;background:#fff;color:var(--ink)}
+textarea{resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.item{border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px;background:#f8fafb}
+.row3{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}
+.row3 label{margin-bottom:0}
+.amt{margin:10px 0 0;font-size:.9rem;color:var(--ink);font-weight:600}
+.btn{font:inherit;font-weight:600;padding:9px 16px;border-radius:6px;border:1px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.add{border-style:dashed;width:100%}
+.btn:hover{background:#e8eef4}.btn.primary:hover{background:#1b3a58}
+.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--amber);outline-offset:1px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.msg{min-height:1.4em;margin:10px 0 0;color:#b3261e;font-size:.9rem}
+.paper{background:#fff;border:1px solid var(--line);border-radius:4px;padding:32px;box-shadow:0 1px 3px rgba(15,34,54,.08);color:#111;min-width:0}
+.ph{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.co{display:flex;gap:10px;align-items:flex-start}
+.co img{height:42px;width:auto}
+.co b{font-size:1.2rem;color:var(--navy)}
+.small{font-size:.82rem;color:var(--muted)}
+.title{text-align:right}
+.title .t{font-size:1.5rem;font-weight:700;color:var(--navy);margin:0}
+.sleepers{height:8px;margin:18px 0 4px;background:repeating-linear-gradient(90deg,var(--navy) 0 14px,transparent 14px 22px)}
+.rail{height:2px;background:var(--amber);margin-bottom:18px}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:18px}
+.meta h3{margin:0 0 4px;font-size:.85rem;color:var(--muted);font-weight:600}
+.meta p{margin:0;white-space:pre-line}
+.empty{color:#9aa6b2}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th{background:var(--navy);color:#fff;text-align:left;padding:8px;font-weight:600;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.totals{margin:12px 0 0 auto;width:min(320px,100%)}
+.totals div{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-variant-numeric:tabular-nums}
+.totals .grand{border-top:2px solid var(--navy);margin-top:6px;padding-top:8px;font-weight:700;font-size:1.1rem}
+.words{margin:16px 0 0;font-weight:600}
+.notes{margin:16px 0 0;white-space:pre-line;font-size:.9rem}
+.foot{margin-top:24px;padding-top:12px;border-top:1px solid var(--line)}
+@page{size:A4;margin:14mm}
+@media print{
+  body{background:#fff}
+  .topbar,.panel{display:none}
+  .layout{display:block;padding:0;max-width:none}
+  .paper{border:0;box-shadow:none;padding:0}
+  .empty{visibility:hidden}
+}
+@media(max-width:520px){.paper{padding:18px}.meta{grid-template-columns:1fr}.title{text-align:left}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="in">
+  <a class="brand" href="index.html"><img src="images/logo.svg" alt="">RakeLink</a>
+  <a class="back" href="index.html">Back to the website</a>
+</div></header>
+
+<main class="layout">
+  <section class="panel" aria-labelledby="ttl">
+    <h1 id="ttl">Generate a bill</h1>
+    <p class="lead">Fill in the details. The bill updates on the right as you type.</p>
+
+    <h2>Bill details</h2>
+    <div class="row">
+      <label>Bill number<input id="iNo" type="text"></label>
+      <label>Bill date<input id="iDate" type="date"></label>
+    </div>
+
+    <h2>Customer</h2>
+    <label>Customer name<input id="cName" type="text" autocomplete="off"></label>
+    <label>Company (optional)<input id="cCo" type="text" autocomplete="off"></label>
+    <label>GSTIN (optional)<input id="cGst" type="text" maxlength="15" autocomplete="off"></label>
+    <label>Billing address<textarea id="cAddr" rows="3"></textarea></label>
+    <div class="row">
+      <label>Consignment ID (optional)<input id="cTrk" type="text" placeholder="TRK1025"></label>
+      <label>Route (optional)<input id="cRoute" type="text" placeholder="Korba to Surat"></label>
+    </div>
+
+    <h2>Items</h2>
+    <div id="items"></div>
+    <button type="button" class="btn add" id="addItem">Add another item</button>
+
+    <h2>Tax</h2>
+    <div class="row">
+      <label>GST rate
+        <select id="gst"><option value="5" selected>5%</option><option value="12">12%</option><option value="18">18%</option><option value="0">0%</option></select>
+      </label>
+      <label>Customer location
+        <select id="tax"><option value="intra" selected>Gujarat (CGST + SGST)</option><option value="igst">Outside Gujarat (IGST)</option></select>
+      </label>
+    </div>
+    <label>Notes<textarea id="notes" rows="2">Payment due within 7 days of the bill date.</textarea></label>
+
+    <div class="actions">
+      <button type="button" class="btn primary" id="print">Print or save as PDF</button>
+      <button type="button" class="btn" id="reset">Start a new bill</button>
+    </div>
+    <p class="msg" id="msg" role="status"></p>
+  </section>
+
+  <section class="paper" id="invoice" aria-label="Bill preview">
+    <div class="ph">
+      <div class="co">
+        <img src="images/logo.svg" alt="">
+        <div>
+          <b>RakeLink Freight Services</b>
+          <div class="small">Station Road Business Centre, Vadodara, Gujarat 390002<br>jaikee.kumar_mba25@gsv.ac.in | +91 74889 91657</div>
+        </div>
+      </div>
+      <div class="title">
+        <p class="t">Tax bill</p>
+        <div class="small">No. <span id="pNo"></span><br>Date <span id="pDate"></span></div>
+      </div>
+    </div>
+    <div class="sleepers"></div><div class="rail"></div>
+
+    <div class="meta">
+      <div>
+        <h3>Billed to</h3>
+        <p><b id="pName"></b></p>
+        <p id="pCo"></p>
+        <p id="pAddr"></p>
+        <p class="small" id="pGstin"></p>
+      </div>
+      <div>
+        <h3>Consignment</h3>
+        <p id="pTrk"></p>
+        <p id="pRoute"></p>
+        <p class="small" id="pSupply"></p>
+      </div>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>S.No.</th><th>Description</th><th class="num">Quantity</th><th class="num">Rate</th><th class="num">Amount</th></tr></thead>
+        <tbody id="pRows"></tbody>
+      </table>
+    </div>
+
+    <div class="totals">
+      <div><span>Subtotal</span><span id="tSub"></span></div>
+      <div id="rC"><span id="lC"></span><span id="tC"></span></div>
+      <div id="rS"><span id="lS"></span><span id="tS"></span></div>
+      <div id="rI"><span id="lI"></span><span id="tI"></span></div>
+      <div class="grand"><span>Total</span><span id="tGrand"></span></div>
+    </div>
+    <p class="words" id="pWords"></p>
+    <p class="notes" id="pNotes"></p>
+    <p class="small foot">This is a computer-generated bill. RakeLink is a fictional company made for the ITBT class exercise.</p>
+  </section>
+</main>
+
+<script>
+(function () {
+  var SERVICES = [
+    { id: 'fwl', name: 'Full wagon load', unit: 'wagon', rate: 35000 },
+    { id: 'pl', name: 'Part load', unit: 'tonne', rate: 1400 },
+    { id: 'fr', name: 'Full rake', unit: 'rake', rate: 1600000 },
+    { id: 'cr', name: 'Container by rail (20-ft)', unit: 'container', rate: 20000 },
+    { id: 'trk', name: 'First and last mile trucking', unit: 'km', rate: 45 },
+    { id: 'doc', name: 'Tracking and documents', unit: 'booking', rate: 500 },
+    { id: 'cus', name: 'Other charge', unit: 'unit', rate: 0 }
+  ];
+  var $ = function (id) { return document.getElementById(id); };
+  var svc = function (id) { return SERVICES.filter(function (s) { return s.id === id; })[0]; };
+  var rs = function (paise) { return '\u20B9' + (paise / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+  var items = [];
+
+  function getSeq() { try { return parseInt(localStorage.getItem('rakelink-bill-seq'), 10) || 1001; } catch (e) { return 1001; } }
+  function setSeq(n) { try { localStorage.setItem('rakelink-bill-seq', n); } catch (e) {} }
+  function today() { var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
+  function fmtDate(v) { if (!v) return ''; return new Date(v + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }); }
+
+  var ONES = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+  var TENS = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+  function two(x) { return x < 20 ? ONES[x] : TENS[Math.floor(x / 10)] + (x % 10 ? ' ' + ONES[x % 10] : ''); }
+  function three(x) { return (x > 99 ? ONES[Math.floor(x / 100)] + ' Hundred' + (x % 100 ? ' ' : '') : '') + (x % 100 ? two(x % 100) : ''); }
+  function words(n) {
+    if (n === 0) return 'Zero';
+    var out = '', cr = Math.floor(n / 1e7); n %= 1e7;
+    var lk = Math.floor(n / 1e5); n %= 1e5;
+    var th = Math.floor(n / 1e3); n %= 1e3;
+    if (cr) out += words(cr) + ' Crore ';
+    if (lk) out += two(lk) + ' Lakh ';
+    if (th) out += two(th) + ' Thousand ';
+    if (n) out += three(n);
+    return out.trim();
+  }
+  function inWords(paise) {
+    var r = Math.floor(paise / 100), p = paise % 100;
+    return 'Rupees ' + words(r) + (p ? ' and ' + words(p) + ' Paise' : '') + ' Only';
+  }
+
+  function put(id, val, placeholder) {
+    var el = $(id), v = (val || '').trim();
+    el.textContent = v || placeholder;
+    el.classList.toggle('empty', !v);
+  }
+
+  function renderEditor() {
+    var box = $('items');
+    box.textContent = '';
+    var opts = SERVICES.map(function (s) { return '<option value="' + s.id + '">' + s.name + '</option>'; }).join('');
+    items.forEach(function (it, i) {
+      var d = document.createElement('div');
+      d.className = 'item';
+      d.setAttribute('data-i', i);
+      d.innerHTML =
+        '<label>Service<select data-k="svc">' + opts + '</select></label>' +
+        '<label>Details (commodity, route)<input data-k="desc" type="text"></label>' +
+        '<div class="row3">' +
+        '<label>Quantity (<span class="u"></span>)<input data-k="qty" type="number" min="0" step="any"></label>' +
+        '<label>Rate in \u20B9<input data-k="rate" type="number" min="0" step="any"></label>' +
+        '<button type="button" class="btn rm">Remove</button></div>' +
+        '<p class="amt"></p>';
+      box.appendChild(d);
+      d.querySelector('[data-k=svc]').value = it.svc;
+      d.querySelector('[data-k=desc]').value = it.desc;
+      d.querySelector('[data-k=qty]').value = it.qty;
+      d.querySelector('[data-k=rate]').value = it.rate;
+      d.querySelector('.u').textContent = svc(it.svc).unit;
+      d.querySelector('.rm').disabled = items.length === 1;
+    });
+    update();
+  }
+
+  function update() {
+    var g = parseFloat($('gst').value) || 0, igst = $('tax').value === 'igst';
+    put('pNo', $('iNo').value, '-');
+    put('pDate', fmtDate($('iDate').value), '-');
+    put('pName', $('cName').value, 'Customer name');
+    put('pCo', $('cCo').value, 'Company');
+    put('pAddr', $('cAddr').value, 'Billing address');
+    put('pGstin', $('cGst').value ? 'GSTIN ' + $('cGst').value.trim().toUpperCase() : '', 'GSTIN');
+    put('pTrk', $('cTrk').value ? 'Consignment ' + $('cTrk').value.trim() : '', 'Consignment ID');
+    put('pRoute', $('cRoute').value ? 'Route: ' + $('cRoute').value.trim() : '', 'Route');
+    $('pSupply').textContent = igst ? 'Interstate supply (IGST)' : 'Supply within Gujarat (CGST and SGST)';
+    $('pNotes').textContent = $('notes').value.trim();
+
+    var body = $('pRows'), subP = 0, n = 0;
+    body.textContent = '';
+    document.querySelectorAll('#items .item').forEach(function (card, i) {
+      var it = items[i], p = Math.round((it.qty || 0) * (it.rate || 0) * 100);
+      card.querySelector('.amt').textContent = 'Line amount ' + rs(p);
+      if (p <= 0) return;
+      subP += p; n++;
+      var tr = document.createElement('tr'), s = svc(it.svc);
+      var c1 = document.createElement('td'); c1.textContent = n;
+      var c2 = document.createElement('td'), b = document.createElement('b'); b.textContent = s.name; c2.appendChild(b);
+      if (it.desc.trim()) { var sm = document.createElement('div'); sm.className = 'small'; sm.textContent = it.desc.trim(); c2.appendChild(sm); }
+      var c3 = document.createElement('td'); c3.className = 'num'; c3.textContent = it.qty + ' ' + s.unit;
+      var c4 = document.createElement('td'); c4.className = 'num'; c4.textContent = rs(Math.round(it.rate * 100));
+      var c5 = document.createElement('td'); c5.className = 'num'; c5.textContent = rs(p);
+      [c1, c2, c3, c4, c5].forEach(function (c) { tr.appendChild(c); });
+      body.appendChild(tr);
+    });
+    if (!n) {
+      var e = document.createElement('tr'), td = document.createElement('td');
+      td.colSpan = 5; td.className = 'empty'; td.textContent = 'Add an item with a quantity and rate.';
+      e.appendChild(td); body.appendChild(e);
+    }
+
+    var gstP = Math.round(subP * g / 100), half = Math.floor(gstP / 2);
+    $('tSub').textContent = rs(subP);
+    $('rC').style.display = $('rS').style.display = igst ? 'none' : 'flex';
+    $('rI').style.display = igst ? 'flex' : 'none';
+    $('lC').textContent = 'CGST @ ' + (g / 2) + '%'; $('tC').textContent = rs(half);
+    $('lS').textContent = 'SGST @ ' + (g / 2) + '%'; $('tS').textContent = rs(gstP - half);
+    $('lI').textContent = 'IGST @ ' + g + '%'; $('tI').textContent = rs(gstP);
+    $('tGrand').textContent = rs(subP + gstP);
+    $('pWords').textContent = subP ? inWords(subP + gstP) : '';
+  }
+
+  function resetForm() {
+    ['cName', 'cCo', 'cGst', 'cAddr', 'cTrk', 'cRoute'].forEach(function (id) { $(id).value = ''; });
+    $('iNo').value = 'RL-' + getSeq();
+    $('iDate').value = today();
+    items = [{ svc: 'fwl', desc: '', qty: 1, rate: 35000 }];
+    $('msg').textContent = '';
+    renderEditor();
+  }
+
+  $('items').addEventListener('input', function (ev) {
+    var card = ev.target.closest('.item'); if (!card) return;
+    var it = items[+card.getAttribute('data-i')], k = ev.target.getAttribute('data-k');
+    if (!k) return;
+    if (k === 'svc') {
+      var s = svc(ev.target.value);
+      it.svc = s.id; it.rate = s.rate;
+      card.querySelector('[data-k=rate]').value = s.rate;
+      card.querySelector('.u').textContent = s.unit;
+    } else if (k === 'desc') {
+      it.desc = ev.target.value;
+    } else {
+      it[k] = parseFloat(ev.target.value) || 0;
+    }
+    update();
+  });
+  $('items').addEventListener('click', function (ev) {
+    if (!ev.target.classList.contains('rm')) return;
+    items.splice(+ev.target.closest('.item').getAttribute('data-i'), 1);
+    renderEditor();
+  });
+  $('addItem').addEventListener('click', function () {
+    items.push({ svc: 'fwl', desc: '', qty: 1, rate: 35000 });
+    renderEditor();
+    var cards = document.querySelectorAll('#items .item');
+    cards[cards.length - 1].querySelector('select').focus();
+  });
+  ['iNo', 'iDate', 'cName', 'cCo', 'cGst', 'cAddr', 'cTrk', 'cRoute', 'gst', 'tax', 'notes'].forEach(function (id) {
+    $(id).addEventListener('input', update);
+  });
+  $('print').addEventListener('click', function () {
+    if (!$('cName').value.trim()) { $('msg').textContent = 'Enter the customer name before printing.'; $('cName').focus(); return; }
+    if (!document.querySelector('#pRows .num')) { $('msg').textContent = 'Add at least one item with a quantity and rate.'; return; }
+    $('msg').textContent = '';
+    window.print();
+  });
+  $('reset').addEventListener('click', function () { setSeq(getSeq() + 1); resetForm(); });
+
+  resetForm();
+})();
+</script>
+</body>
+</html>
