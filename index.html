@@ -1,402 +1,545 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RakeLink | Rail freight booking and tracking</title>
-  <meta name="description" content="RakeLink books wagons, rakes and containers on Indian Railways and tracks every consignment from the loading siding to the destination terminal.">
-  <meta name="theme-color" content="#0F2236">
-  <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="RakeLink books wagons, rakes and containers on Indian Railways and tracks every consignment from the loading siding to the destination terminal.">
+<meta name="theme-color" content="#0F2236">
+<title>RakeLink | Rail freight booking and tracking</title>
+<link rel="icon" href="images/logo.svg">
+<style>
+:root{--navy:#0F2236;--amber:#E39A1B;--ink:#1c2733;--muted:#5d6b79;--line:#d8dee5;--bg:#eef2f5}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;font:16px/1.55 "Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff}
+img{max-width:100%;height:auto}
+a{color:#0b5a9c}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px;z-index:9}
+.wrap{max-width:1100px;margin:auto;padding:0 20px}
+section{padding:56px 0}
+.alt{background:var(--bg)}
+section h2{font-size:1.7rem;margin:0 0 6px;color:var(--navy)}
+.lead{color:var(--muted);margin:0 0 20px;max-width:65ch}
+.small{font-size:.82rem;color:var(--muted)}
+/* header */
+.site-head{position:sticky;top:0;z-index:5;background:var(--navy)}
+.site-head .in{max-width:1100px;margin:auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:700;font-size:1.15rem}
+.brand img{height:32px;width:auto}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:6px}
+nav a:hover{background:#1b3a58}
+.menu{display:none;font:inherit;color:#fff;background:none;border:1px solid #5b7189;border-radius:6px;padding:6px 14px;cursor:pointer}
+@media(max-width:800px){.menu{display:block}nav{display:none;width:100%;flex-direction:column}nav.open{display:flex}}
+/* hero */
+.hero{background:var(--navy);color:#fff;padding:56px 0 40px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
+.hero h1{font-size:2.5rem;line-height:1.15;margin:0 0 14px}
+.hero p{color:#cfdae5;max-width:52ch}
+@media(max-width:800px){.hero .wrap{grid-template-columns:1fr}.hero h1{font-size:2rem}}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}
+.btn{display:inline-block;font:inherit;font-weight:600;padding:9px 16px;border-radius:6px;border:1px solid var(--navy);background:#fff;color:var(--navy);cursor:pointer;text-decoration:none}
+.btn:hover{background:#e8eef4}
+.btn.primary{background:var(--navy);color:#fff}.btn.primary:hover{background:#1b3a58}
+.btn.amber{background:var(--amber);border-color:var(--amber);color:var(--navy)}.btn.amber:hover{background:#f0ab35}
+.btn.ghost{background:none;border-color:#8da2b8;color:#fff}.btn.ghost:hover{background:#1b3a58}
+.btn.add{border-style:dashed;width:100%}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:1px}
+.sleepers{height:8px;margin-top:28px;background:repeating-linear-gradient(90deg,#fff 0 14px,transparent 14px 22px);opacity:.5}
+/* about */
+.blks{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin:20px 0 28px}
+.blks h3{margin:0 0 4px;font-size:1.05rem;color:var(--navy)}.blks p{margin:0}
+figure{margin:0}figcaption{font-size:.85rem;color:var(--muted);margin-top:6px}
+/* tables */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th{background:var(--navy);color:#fff;text-align:left;padding:8px;font-weight:600;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+/* dashboard */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:20px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px}
+.kpi b{display:block;font-size:1.8rem;color:var(--navy);line-height:1.1}
+.kpi strong{display:block;margin-top:2px}.kpi span{font-size:.85rem;color:var(--muted)}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.chart{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px}
+.chart h3{margin:0 0 12px;font-size:1rem}
+.bar{display:grid;grid-template-columns:125px 1fr 48px;gap:8px;align-items:center;font-size:.85rem;margin-bottom:6px}
+.bar span{display:block;background:#e6ecf1;border-radius:3px}
+.bar i{display:block;height:14px;background:var(--navy);border-radius:3px}
+.chart.warn .bar i{background:var(--amber)}
+.bar em{font-style:normal;text-align:right;font-variant-numeric:tabular-nums}
+.attn{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:10px}
+.attn li{background:#fff;border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:6px;padding:12px 14px}
+/* forms */
+label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:12px}
+input,select,textarea{display:block;width:100%;margin-top:4px;font:inherit;font-size:1rem;padding:8px 10px;border:1px solid #b9c3cd;border-radius:6px;background:#fff;color:var(--ink)}
+textarea{resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.link{font:inherit;background:none;border:0;color:#0b5a9c;text-decoration:underline;cursor:pointer;padding:2px 4px}
+/* track */
+.trackbox{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;max-width:560px}
+.trackbox label{flex:1;min-width:200px;margin:0}
+.result{margin-top:16px;max-width:640px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-weight:600;font-size:.85rem}
+.ok{background:#d9f2e1;color:#12602e}.warn{background:#fdecc8;color:#7a4b00}.bad{background:#fbdad7;color:#8a1c14}
+.prog{height:8px;background:#e6ecf1;border-radius:4px;margin:12px 0}.prog i{display:block;height:100%;background:var(--navy);border-radius:4px}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:4px 12px;margin:0}.kv dt{color:var(--muted)}.kv dd{margin:0}
+/* contact + footer */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+@media(max-width:800px){.cols{grid-template-columns:minmax(0,1fr)}}
+iframe{width:100%;height:220px;border:0;border-radius:8px;margin-top:12px}
+.site-foot{background:var(--navy);color:#cfdae5;padding:32px 0;font-size:.92rem}
+.site-foot a{color:#f6d28a}.site-foot h2{color:#fff;font-size:1rem;margin:0 0 8px}
+.site-foot ul{padding-left:18px;margin:0}.site-foot p{margin:0 0 8px}
+/* bill */
+.bl{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:24px;align-items:start}
+@media(max-width:900px){.bl{grid-template-columns:minmax(0,1fr)}}
+.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px}
+.panel h2{font-size:1rem;margin:22px 0 10px;padding-top:16px;border-top:1px solid var(--line)}
+.panel h2:first-child{margin-top:0;padding-top:0;border:0}
+.item{border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px;background:#f8fafb}
+.row3{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}.row3 label{margin-bottom:0}
+.amt{margin:10px 0 0;font-size:.9rem;font-weight:600}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.msg{min-height:1.4em;margin:10px 0 0;color:#b3261e;font-size:.9rem}
+.paper{background:#fff;border:1px solid var(--line);border-radius:4px;padding:32px;box-shadow:0 1px 3px rgba(15,34,54,.08);color:#111;min-width:0}
+.ph{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.co{display:flex;gap:10px;align-items:flex-start}.co img{height:42px;width:auto}.co b{font-size:1.2rem;color:var(--navy)}
+.title{text-align:right}.title .t{font-size:1.5rem;font-weight:700;color:var(--navy);margin:0}
+.track{height:8px;margin:18px 0 4px;background:repeating-linear-gradient(90deg,var(--navy) 0 14px,transparent 14px 22px);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rail{height:2px;background:var(--amber);margin-bottom:18px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:18px}
+.meta h3{margin:0 0 4px;font-size:.85rem;color:var(--muted);font-weight:600}.meta p{margin:0;white-space:pre-line}
+.empty{color:#9aa6b2}
+.totals{margin:12px 0 0 auto;width:min(320px,100%)}
+.totals div{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-variant-numeric:tabular-nums}
+.totals .grand{border-top:2px solid var(--navy);margin-top:6px;padding-top:8px;font-weight:700;font-size:1.1rem}
+.words{margin:16px 0 0;font-weight:600}.notes{margin:16px 0 0;white-space:pre-line;font-size:.9rem}
+.foot{margin:24px 0 0;padding-top:12px;border-top:1px solid var(--line)}
+@media(max-width:520px){.paper{padding:18px}.meta{grid-template-columns:1fr}.title{text-align:left}}
+@page{size:A4;margin:14mm}
+@media print{
+  .skip,.site-head,.site-foot,main>section:not(#bill),#bill .intro,#bill .panel{display:none}
+  #bill{padding:0;background:#fff}#bill .wrap{max-width:none;padding:0}
+  .bl{display:block}.paper{border:0;box-shadow:none;padding:0}.empty{visibility:hidden}
+}
+</style>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head" id="home"><div class="in">
+  <a class="brand" href="#home"><img src="images/logo.svg" alt="">RakeLink</a>
+  <button class="menu" id="menu" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+  <nav id="nav" aria-label="Main">
+    <a href="#home">Home</a><a href="#about">About</a><a href="#services">Services</a><a href="#dashboard">Dashboard</a><a href="#track">Track</a><a href="#bill">Generate bill</a><a href="#contact">Contact</a>
+  </nav>
+</div></header>
 
-  <!-- ===================== HEADER ===================== -->
-  <header class="site-header">
-    <div class="wrap header-inner">
-      <a class="brand" href="#home" aria-label="RakeLink, go to home">
-        <img src="images/logo.svg" alt="" width="36" height="36">
-        <span>RakeLink</span>
-      </a>
+<main id="main">
+<section class="hero"><div class="wrap">
+  <div>
+    <h1>Book rail freight. Know where every wagon is.</h1>
+    <p>RakeLink helps factories, traders and exporters book wagons, rakes and containers on Indian Railways, then follow each consignment from the loading siding to the destination terminal.</p>
+    <div class="btns"><a class="btn amber" href="#services">Get Started</a><a class="btn ghost" href="#track">Track a consignment</a><a class="btn ghost" href="#bill">Generate a bill</a></div>
+    <p class="small" style="color:#a9bacb">Based in Vadodara, Gujarat. Serving Gujarat, Maharashtra, Madhya Pradesh and the Western Dedicated Freight Corridor.</p>
+  </div>
+  <img src="images/hero-train.svg" alt="Illustration of a freight train">
+</div></section>
 
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-        <span class="sr-only">Menu</span>
-        <span class="nav-toggle-bars" aria-hidden="true"></span>
-      </button>
+<section class="alt" id="about"><div class="wrap">
+  <h2>One booking desk for the whole rail journey</h2>
+  <p class="lead">Most small and mid-size shippers have no railway siding of their own and no team that knows freight tariffs. RakeLink is that team.</p>
+  <div class="blks">
+    <div><h3>What we do</h3><p>We register wagon demand with Indian Railways, handle the railway receipt and freight payment, arrange trucks to and from the siding, and share live status until the cargo is delivered.</p></div>
+    <div><h3>Who we serve</h3><p>Steel, cement and fertiliser makers, agri-commodity traders, exporters moving containers to ports, and small shippers who book less than a full wagon.</p></div>
+    <div><h3>Where we operate</h3><p>Gujarat, Maharashtra and Madhya Pradesh, long-haul lanes from Jamshedpur and Korba into Gujarat, and port lanes to Mundra and JN Port.</p></div>
+    <div><h3>Why customers choose us</h3><p>One booking, one tracking page and one invoice for the rail and road legs together. Customers spend less time chasing wagons and more time running the plant.</p></div>
+  </div>
+  <figure><img src="images/network-map.svg" alt="Schematic map of RakeLink core rail lanes linking Jamshedpur, Korba, Katni, Nagpur, Surat, Vadodara, Ahmedabad, Mundra, JN Port and Dadri"><figcaption>Our core lanes. The amber line is the Western Dedicated Freight Corridor from JN Port to Dadri.</figcaption></figure>
+</div></section>
 
-      <nav id="site-nav" class="site-nav" aria-label="Main">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#dashboard">Dashboard</a>
-        <a href="#track">Track</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
+<section id="services"><div class="wrap">
+  <h2>Services and prices</h2>
+  <p class="lead">Pick the service that matches your load, then book it from the Contact section. Prices are indicative starting rates.</p>
+  <div class="tw"><table><thead><tr><th>Service</th><th>What you get</th><th>Starting price</th><th>Book</th></tr></thead><tbody id="svcRows"></tbody></table></div>
+  <p class="small">Prices are illustrative for this class exercise. Real rates depend on distance, commodity class and the railway tariff in force.</p>
+</div></section>
 
-  <main id="main">
+<section class="alt" id="dashboard"><div class="wrap">
+  <h2>Operations dashboard</h2>
+  <p class="lead">What the operations manager needs to know first thing in the morning. September 2026. Sample data for the class exercise.</p>
+  <div class="kpis">
+    <div class="kpi"><b>1,250</b><strong>Total bookings</strong><span>Wagon, rake and container bookings this month</span></div>
+    <div class="kpi"><b>1,080</b><strong>Delivered</strong><span>86.4% of bookings</span></div>
+    <div class="kpi"><b>120</b><strong>In transit</strong><span>9.6% of bookings</span></div>
+    <div class="kpi"><b>50</b><strong>Delayed</strong><span>4.0% of bookings</span></div>
+    <div class="kpi"><b>91.5%</b><strong>On-time delivery</strong><span>988 of 1,080 delivered by the promised date</span></div>
+    <div class="kpi"><b>4.2</b><strong>Wagon turnaround (days)</strong><span>Average time from placement to release</span></div>
+  </div>
+  <div class="charts">
+    <div class="chart"><h3>Bookings per month</h3><div id="cMonth"></div></div>
+    <div class="chart"><h3>Cargo mix by tonnage</h3><div id="cMix"></div></div>
+    <div class="chart warn"><h3>Why 50 consignments are delayed</h3><div id="cDelay"></div></div>
+  </div>
+  <ul class="attn">
+    <li><b>50 consignments are delayed.</b> Terminal congestion causes 18 of them, the largest single cause.<br><a href="#track" data-id="TRK1018">Open delayed consignment TRK1018</a></li>
+    <li><b>Wagon shortage caused 12 delays.</b> Request extra wagon allotment on the Korba to Surat coal lane before the weekend.<br><a href="#services">See rake booking options</a></li>
+    <li><b>120 consignments are in transit.</b> Follow a live one to see what customers see.<br><a href="#track" data-id="TRK1025">Open in-transit consignment TRK1025</a></li>
+  </ul>
+</div></section>
 
-    <!-- ===================== 1. HOME ===================== -->
-    <section id="home" class="hero">
-      <div class="wrap hero-copy">
-        <h1>Book rail freight. Know where every wagon is.</h1>
-        <p class="lead">RakeLink helps factories, traders and exporters book wagons, rakes and containers on Indian Railways, then follow each consignment from the loading siding to the destination terminal.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#services">Get Started</a>
-          <a class="btn btn-ghost" href="#track">Track a consignment</a>
-        </div>
-        <p class="hero-note">Based in Vadodara, Gujarat. Serving Gujarat, Maharashtra, Madhya Pradesh and the Western Dedicated Freight Corridor.</p>
+<section id="track"><div class="wrap">
+  <h2>Track a consignment</h2>
+  <p class="lead">Enter the consignment ID from your booking confirmation to see where your wagons are and when they will arrive.</p>
+  <form class="trackbox" id="tForm">
+    <label>Consignment ID<input id="tId" type="text" placeholder="TRK1025" autocomplete="off"></label>
+    <button class="btn primary" type="submit">Track consignment</button>
+  </form>
+  <p class="small">Try a sample:
+    <button class="link" type="button" data-id="TRK1018">TRK1018</button>
+    <button class="link" type="button" data-id="TRK1025">TRK1025</button>
+    <button class="link" type="button" data-id="TRK1001">TRK1001</button></p>
+  <div class="result" id="tOut" aria-live="polite">Your consignment status will appear here.</div>
+</div></section>
+
+<section class="alt" id="bill"><div class="wrap">
+  <div class="intro">
+    <h2>Generate a bill</h2>
+    <p class="lead">Fill in the customer and items. The bill updates as you type. Press Print or save as PDF when it is ready.</p>
+  </div>
+  <div class="bl">
+    <div class="panel">
+      <h2>Bill details</h2>
+      <div class="row">
+        <label>Bill number<input id="iNo" type="text"></label>
+        <label>Bill date<input id="iDate" type="date"></label>
       </div>
-      <div class="hero-rail">
-        <img class="hero-train" src="images/hero-train.svg" alt="" width="1240" height="200">
+      <h2>Customer</h2>
+      <label>Customer name<input id="cName" type="text" autocomplete="off"></label>
+      <label>Company (optional)<input id="cCo" type="text" autocomplete="off"></label>
+      <label>GSTIN (optional)<input id="cGst" type="text" maxlength="15" autocomplete="off"></label>
+      <label>Billing address<textarea id="cAddr" rows="3"></textarea></label>
+      <div class="row">
+        <label>Consignment ID (optional)<input id="cTrk" type="text" placeholder="TRK1025"></label>
+        <label>Route (optional)<input id="cRoute" type="text" placeholder="Korba to Surat"></label>
       </div>
-    </section>
-
-    <!-- ===================== 2. ABOUT ===================== -->
-    <section id="about" class="section">
-      <div class="wrap about-grid">
-        <div>
-          <h2>One booking desk for the whole rail journey</h2>
-          <p class="section-lead">Most small and mid-size shippers have no railway siding of their own and no team that knows freight tariffs. RakeLink is that team.</p>
-
-          <dl class="facts-list">
-            <div>
-              <dt>What we do</dt>
-              <dd>We register wagon demand with Indian Railways, handle the railway receipt and freight payment, arrange trucks to and from the siding, and share live status until the cargo is delivered.</dd>
-            </div>
-            <div>
-              <dt>Who we serve</dt>
-              <dd>Steel, cement and fertiliser makers, agri-commodity traders, exporters moving containers to ports, and small shippers who book less than a full wagon.</dd>
-            </div>
-            <div>
-              <dt>Where we operate</dt>
-              <dd>Gujarat, Maharashtra and Madhya Pradesh, long-haul lanes from Jamshedpur and Korba into Gujarat, and port lanes to Mundra and JN Port.</dd>
-            </div>
-            <div>
-              <dt>Why customers choose us</dt>
-              <dd>One booking, one tracking page and one invoice for the rail and road legs together. Customers spend less time chasing wagons and more time running the plant.</dd>
-            </div>
-          </dl>
-        </div>
-
-        <figure class="network">
-          <img src="images/network-map.svg" alt="Schematic map of RakeLink core rail lanes linking Jamshedpur, Korba, Katni, Nagpur, Surat, Vadodara, Ahmedabad, Mundra, JN Port and Dadri" width="600" height="310">
-          <figcaption>Our core lanes. The amber line is the Western Dedicated Freight Corridor from JN Port to Dadri.</figcaption>
-        </figure>
+      <h2>Items</h2>
+      <div id="items"></div>
+      <button type="button" class="btn add" id="addItem">Add another item</button>
+      <h2>Tax</h2>
+      <div class="row">
+        <label>GST rate<select id="gst"><option value="5" selected>5%</option><option value="12">12%</option><option value="18">18%</option><option value="0">0%</option></select></label>
+        <label>Customer location<select id="tax"><option value="intra" selected>Gujarat (CGST + SGST)</option><option value="igst">Outside Gujarat (IGST)</option></select></label>
       </div>
-    </section>
-
-    <!-- ===================== 3. SERVICES ===================== -->
-    <section id="services" class="section section--tint">
-      <div class="wrap">
-        <h2>Services and prices</h2>
-        <p class="section-lead">Pick the service that matches your load, then book it from the Contact section. Prices are indicative starting rates.</p>
-
-        <div class="table-scroll">
-          <table class="price-table">
-            <thead>
-              <tr>
-                <th scope="col">Service</th>
-                <th scope="col">What you get</th>
-                <th scope="col">Starting price</th>
-                <th scope="col"><span class="sr-only">Book</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Full wagon load</td>
-                <td>One wagon of about 60 tonnes between any two goods sheds or sidings.</td>
-                <td class="price">₹35,000 per wagon<span class="price-note">about 400 km</span></td>
-                <td><a class="btn btn-outline" href="#contact" data-service="Full wagon load">Book this service</a></td>
-              </tr>
-              <tr>
-                <td>Part load</td>
-                <td>For shipments under 10 tonnes. Your cargo shares a wagon with others on the same lane.</td>
-                <td class="price">₹1,400 per tonne</td>
-                <td><a class="btn btn-outline" href="#contact" data-service="Part load">Book this service</a></td>
-              </tr>
-              <tr>
-                <td>Full rake</td>
-                <td>A full train of about 58 wagons (around 3,500 tonnes) with a dedicated rake coordinator.</td>
-                <td class="price">₹16,00,000 per rake<span class="price-note">about 400 km</span></td>
-                <td><a class="btn btn-outline" href="#contact" data-service="Full rake">Book this service</a></td>
-              </tr>
-              <tr>
-                <td>Container by rail</td>
-                <td>20-ft and 40-ft containers between Mundra, JN Port and inland container depots.</td>
-                <td class="price">₹20,000 per 20-ft container</td>
-                <td><a class="btn btn-outline" href="#contact" data-service="Container by rail">Book this service</a></td>
-              </tr>
-              <tr>
-                <td>First and last mile trucking</td>
-                <td>Truck pickup from your plant to the siding and delivery from the destination terminal.</td>
-                <td class="price">₹45 per km</td>
-                <td><a class="btn btn-outline" href="#contact" data-service="First and last mile trucking">Book this service</a></td>
-              </tr>
-              <tr>
-                <td>Tracking and documents</td>
-                <td>Live status page, railway receipt handling and SMS alerts when a consignment is delayed.</td>
-                <td class="price">₹500 per booking</td>
-                <td><a class="btn btn-outline" href="#contact" data-service="Tracking and documents">Book this service</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="fineprint">Prices are illustrative for this class exercise. Real rates depend on distance, commodity class and the railway tariff in force.</p>
+      <label>Notes<textarea id="notes" rows="2">Payment due within 7 days of the bill date.</textarea></label>
+      <div class="actions">
+        <button type="button" class="btn primary" id="print">Print or save as PDF</button>
+        <button type="button" class="btn" id="reset">Start a new bill</button>
       </div>
-    </section>
-
-    <!-- ===================== 4. DASHBOARD ===================== -->
-    <section id="dashboard" class="section">
-      <div class="wrap section-head">
-        <div>
-          <h2>Operations dashboard</h2>
-          <p class="section-lead">What the operations manager needs to know first thing in the morning.</p>
-        </div>
-        <p class="period">September 2026. Sample data for the class exercise.</p>
-      </div>
-
-      <div class="kpi-band">
-        <div class="wrap">
-          <ul class="kpis">
-            <li class="kpi">
-              <span class="kpi-value">1,250</span>
-              <span class="kpi-label">Total bookings</span>
-              <span class="kpi-note">Wagon, rake and container bookings this month</span>
-            </li>
-            <li class="kpi kpi--good">
-              <span class="kpi-value">1,080</span>
-              <span class="kpi-label">Delivered</span>
-              <span class="kpi-note">86.4% of bookings</span>
-            </li>
-            <li class="kpi kpi--transit">
-              <span class="kpi-value">120</span>
-              <span class="kpi-label">In transit</span>
-              <span class="kpi-note">9.6% of bookings</span>
-            </li>
-            <li class="kpi kpi--delayed">
-              <span class="kpi-value">50</span>
-              <span class="kpi-label">Delayed</span>
-              <span class="kpi-note">4.0% of bookings</span>
-            </li>
-            <li class="kpi kpi--good">
-              <span class="kpi-value">91.5%</span>
-              <span class="kpi-label">On-time delivery</span>
-              <span class="kpi-note">988 of 1,080 delivered by the promised date</span>
-            </li>
-            <li class="kpi">
-              <span class="kpi-value">4.2</span>
-              <span class="kpi-label">Wagon turnaround (days)</span>
-              <span class="kpi-note">Average time from placement to release</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="wrap dash-grid">
-        <section class="panel panel--wide" aria-labelledby="h-monthly">
-          <h3 id="h-monthly">Bookings per month</h3>
-          <div id="chart-monthly"></div>
-        </section>
-
-        <section class="panel" aria-labelledby="h-mix">
-          <h3 id="h-mix">Cargo mix by tonnage</h3>
-          <div id="chart-mix" class="mix"></div>
-        </section>
-
-        <section class="panel" aria-labelledby="h-delay">
-          <h3 id="h-delay">Why <span id="delay-total">50</span> consignments are delayed</h3>
-          <div id="chart-delay"></div>
-        </section>
-
-        <aside class="panel panel--wide panel--attention" aria-labelledby="h-attention">
-          <h3 id="h-attention">Needs attention today</h3>
-          <ul class="attention-list">
-            <li>
-              <p><strong>50 consignments are delayed.</strong> Terminal congestion causes 18 of them, the largest single cause.</p>
-              <a class="text-link" href="#track" data-track="TRK1018">Open delayed consignment TRK1018</a>
-            </li>
-            <li>
-              <p><strong>Wagon shortage caused 12 delays.</strong> Request extra wagon allotment on the Korba to Surat coal lane before the weekend.</p>
-              <a class="text-link" href="#services">See rake booking options</a>
-            </li>
-            <li>
-              <p><strong>120 consignments are in transit.</strong> Follow a live one to see what customers see.</p>
-              <a class="text-link" href="#track" data-track="TRK1025">Open in-transit consignment TRK1025</a>
-            </li>
-          </ul>
-        </aside>
-      </div>
-    </section>
-
-    <!-- ===================== 5. TRACK (interactive feature) ===================== -->
-    <section id="track" class="section section--tint">
-      <div class="wrap">
-        <h2>Track a consignment</h2>
-        <p class="section-lead">Enter the consignment ID from your booking confirmation to see where your wagons are and when they will arrive.</p>
-
-        <form id="track-form" class="track-form" novalidate>
-          <label for="track-id">Consignment ID</label>
-          <div class="track-row">
-            <input id="track-id" name="id" type="text" placeholder="For example, TRK1025" autocomplete="off" maxlength="12">
-            <button class="btn btn-dark" type="submit">Track consignment</button>
-          </div>
-          <div class="chips">
-            <span>Try a sample:</span>
-            <span id="track-samples" class="chip-list"></span>
-          </div>
-        </form>
-
-        <div id="track-result" class="track-result" aria-live="polite">
-          <p class="empty">Your consignment status will appear here.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===================== 6. CONTACT ===================== -->
-    <section id="contact" class="section">
-      <div class="wrap contact-grid">
-        <div>
-          <h2>Talk to the booking desk</h2>
-          <p class="section-lead">Tell us the cargo, route and quantity. We reply with a rate and wagon availability within one working day.</p>
-
-          <dl class="contact-list">
-            <div>
-              <dt>Email</dt>
-              <dd><a class="text-link" href="mailto:jaikee.kumar_mba25@gsv.ac.in?subject=Rail%20freight%20enquiry">jaikee.kumar_mba25@gsv.ac.in</a></dd>
-            </div>
-            <div>
-              <dt>Phone</dt>
-              <dd><a class="text-link" href="tel:+919000012345">+91 74889 91657</a></dd>
-            </div>
-            <div>
-              <dt>Office</dt>
-              <dd>RakeLink Freight Services, Station Road Business Centre, Vadodara, Gujarat 390002<br>
-                <a class="text-link" href="https://www.google.com/maps/search/?api=1&amp;query=Vadodara+Junction+Railway+Station" target="_blank" rel="noopener noreferrer">Get directions on Google Maps</a>
-              </dd>
-            </div>
-            <div>
-              <dt>Hours</dt>
-              <dd>Monday to Saturday, 9:30 am to 6:30 pm IST</dd>
-            </div>
-            <div>
-              <dt>LinkedIn</dt>
-              <dd><a class="text-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">jaikee-kumar-826199311</a></dd>
-            </div>
-          </dl>
-
-          <iframe class="map-frame" title="Map showing the RakeLink office near Vadodara Junction" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Vadodara+Junction+Railway+Station&amp;output=embed"></iframe>
-        </div>
-
-        <form id="enquiry-form" class="enquiry" novalidate>
-          <h3>Send an enquiry</h3>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="f-name">Your name</label>
-              <input id="f-name" name="name" type="text" autocomplete="name">
-              <span class="error" data-error-for="name"></span>
-            </div>
-            <div class="field">
-              <label for="f-company">Company (optional)</label>
-              <input id="f-company" name="company" type="text" autocomplete="organization">
-              <span class="error" data-error-for="company"></span>
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field">
-              <label for="f-email">Email</label>
-              <input id="f-email" name="email" type="email" autocomplete="email">
-              <span class="error" data-error-for="email"></span>
-            </div>
-            <div class="field">
-              <label for="f-phone">Phone (optional)</label>
-              <input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="10-digit mobile number">
-              <span class="error" data-error-for="phone"></span>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="f-service">Service</label>
-            <select id="f-service" name="service">
-              <option value="">Choose a service</option>
-              <option>Full wagon load</option>
-              <option>Part load</option>
-              <option>Full rake</option>
-              <option>Container by rail</option>
-              <option>First and last mile trucking</option>
-              <option>Tracking and documents</option>
-            </select>
-            <span class="error" data-error-for="service"></span>
-          </div>
-
-          <div class="field">
-            <label for="f-message">Cargo, route and quantity</label>
-            <textarea id="f-message" name="message" rows="4" placeholder="For example: 120 tonnes of steel coils, Jamshedpur to Vadodara, loading from 10 October"></textarea>
-            <span class="error" data-error-for="message"></span>
-          </div>
-
-          <button class="btn btn-dark" type="submit">Send enquiry</button>
-          <div id="form-status" class="form-status" aria-live="polite"></div>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <!-- ===================== FOOTER ===================== -->
-  <footer class="site-footer">
-    <div class="wrap footer-grid">
-      <div>
-        <p class="footer-brand"><img src="images/logo.svg" alt="" width="32" height="32"> RakeLink</p>
-        <p>Rail freight booking and tracking for shippers who do not have their own siding.</p>
-      </div>
-
-      <div>
-        <h2 class="footer-h">Rail references we rely on</h2>
-        <ul class="ref-list">
-          <li>
-            <a href="https://www.fois.indianrail.gov.in/" target="_blank" rel="noopener noreferrer">Freight Operations Information System (FOIS)</a>
-            <span>Register wagon demand and check official consignment status.</span>
-          </li>
-          <li>
-            <a href="https://www.fois.indianrail.gov.in/RailSAHAY/index.jsp" target="_blank" rel="noopener noreferrer">Freight Business Development portal</a>
-            <span>Look up routes and distances before quoting a customer.</span>
-          </li>
-          <li>
-            <a href="https://dfccil.com/" target="_blank" rel="noopener noreferrer">Dedicated Freight Corridor Corporation (DFCCIL)</a>
-            <span>Check corridor details for our JN Port to Dadri container lane.</span>
-          </li>
-          <li>
-            <a href="https://indianrailways.gov.in/" target="_blank" rel="noopener noreferrer">Indian Railways</a>
-            <span>Read freight circulars and tariff updates that change our rates.</span>
-          </li>
-        </ul>
-      </div>
-
-      <div>
-        <h2 class="footer-h">Jump to</h2>
-        <ul class="ref-list">
-          <li><a href="#services">Services and prices</a></li>
-          <li><a href="#dashboard">Operations dashboard</a></li>
-          <li><a href="#track">Track a consignment</a></li>
-          <li><a href="#contact">Contact and enquiry</a></li>
-        </ul>
-      </div>
+      <p class="msg" id="bmsg" role="status"></p>
     </div>
 
-    <div class="wrap footer-base">
-      <p>ITBT live class exercise by Jaikee Kumar, MBA (Logistics and Supply Chain Management), Gati Shakti Vishwavidyalaya, Vadodara. The company, prices, contacts and all dashboard data are fictional.</p>
+    <div class="paper" id="invoice" aria-label="Bill preview">
+      <div class="ph">
+        <div class="co"><img src="images/logo.svg" alt="">
+          <div><b>RakeLink Freight Services</b>
+          <div class="small">Station Road Business Centre, Vadodara, Gujarat 390002<br>jaikee.kumar_mba25@gsv.ac.in | +91 74889 91657</div></div>
+        </div>
+        <div class="title"><p class="t">Tax bill</p><div class="small">No. <span id="pNo"></span><br>Date <span id="pDate"></span></div></div>
+      </div>
+      <div class="track"></div><div class="rail"></div>
+      <div class="meta">
+        <div><h3>Billed to</h3><p><b id="pName"></b></p><p id="pCo"></p><p id="pAddr"></p><p class="small" id="pGstin"></p></div>
+        <div><h3>Consignment</h3><p id="pTrk"></p><p id="pRoute"></p><p class="small" id="pSupply"></p></div>
+      </div>
+      <div class="tw"><table>
+        <thead><tr><th>S.No.</th><th>Description</th><th class="num">Quantity</th><th class="num">Rate</th><th class="num">Amount</th></tr></thead>
+        <tbody id="pRows"></tbody>
+      </table></div>
+      <div class="totals">
+        <div><span>Subtotal</span><span id="tSub"></span></div>
+        <div id="rC"><span id="lC"></span><span id="tC"></span></div>
+        <div id="rS"><span id="lS"></span><span id="tS"></span></div>
+        <div id="rI"><span id="lI"></span><span id="tI"></span></div>
+        <div class="grand"><span>Total</span><span id="tGrand"></span></div>
+      </div>
+      <p class="words" id="pWords"></p>
+      <p class="notes" id="pNotes"></p>
+      <p class="small foot">This is a computer-generated bill. RakeLink is a fictional company made for the ITBT class exercise.</p>
     </div>
-  </footer>
+  </div>
+</div></section>
 
-  <script src="script.js" defer></script>
+<section id="contact"><div class="wrap">
+  <h2>Talk to the booking desk</h2>
+  <p class="lead">Tell us the cargo, route and quantity. We reply with a rate and wagon availability within one working day.</p>
+  <div class="cols">
+    <div>
+      <p><b>Email</b><br><a href="mailto:jaikee.kumar_mba25@gsv.ac.in?subject=Rail%20freight%20enquiry">jaikee.kumar_mba25@gsv.ac.in</a></p>
+      <p><b>Phone</b><br><a href="tel:+917488991657">+91 74889 91657</a></p>
+      <p><b>Office</b><br>RakeLink Freight Services, Station Road Business Centre, Vadodara, Gujarat 390002<br><a href="https://www.google.com/maps/search/?api=1&amp;query=Vadodara+Junction+Railway+Station">Get directions on Google Maps</a></p>
+      <p><b>Hours</b><br>Monday to Saturday, 9:30 am to 6:30 pm IST</p>
+      <p><b>LinkedIn</b><br><a href="https://www.linkedin.com/">jaikee-kumar-826199311</a></p>
+      <iframe title="Map of Vadodara Junction Railway Station" loading="lazy" src="https://www.google.com/maps?q=Vadodara+Junction+Railway+Station&amp;output=embed"></iframe>
+    </div>
+    <form id="eForm">
+      <h3 style="margin-top:0">Send an enquiry</h3>
+      <label>Your name<input id="eName" type="text" required></label>
+      <label>Company (optional)<input id="eCo" type="text"></label>
+      <div class="row">
+        <label>Email<input id="eMail" type="email" required></label>
+        <label>Phone (optional)<input id="ePhone" type="tel"></label>
+      </div>
+      <label>Service<select id="eSvc" required></select></label>
+      <label>Cargo, route and quantity<textarea id="eMsg" rows="4" required></textarea></label>
+      <button class="btn primary" type="submit">Send enquiry</button>
+      <p class="small" id="emsg" role="status"></p>
+    </form>
+  </div>
+</div></section>
+</main>
+
+<footer class="site-foot"><div class="wrap cols">
+  <div>
+    <p><b style="color:#fff">RakeLink</b></p>
+    <p>Rail freight booking and tracking for shippers who do not have their own siding.</p>
+    <h2 style="margin-top:16px">Jump to</h2>
+    <ul><li><a href="#services">Services and prices</a></li><li><a href="#dashboard">Operations dashboard</a></li><li><a href="#track">Track a consignment</a></li><li><a href="#bill">Generate a bill</a></li><li><a href="#contact">Contact and enquiry</a></li></ul>
+  </div>
+  <div>
+    <h2>Rail references we rely on</h2>
+    <ul>
+      <li><a href="https://www.fois.indianrail.gov.in/">Freight Operations Information System (FOIS)</a>: register wagon demand and check official consignment status.</li>
+      <li><a href="https://www.fois.indianrail.gov.in/RailSAHAY/index.jsp">Freight Business Development portal</a>: look up routes and distances before quoting a customer.</li>
+      <li><a href="https://dfccil.com/">Dedicated Freight Corridor Corporation (DFCCIL)</a>: check corridor details for our JN Port to Dadri container lane.</li>
+      <li><a href="https://indianrailways.gov.in/">Indian Railways</a>: read freight circulars and tariff updates that change our rates.</li>
+    </ul>
+  </div>
+  <p class="small" style="grid-column:1/-1;color:#a9bacb">ITBT live class exercise by Jaikee Kumar, MBA (Logistics and Supply Chain Management), Gati Shakti Vishwavidyalaya, Vadodara. The company, prices, contacts and all dashboard data are fictional.</p>
+</div></footer>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function el(t, x, c) { var e = document.createElement(t); if (x != null) e.textContent = x; if (c) e.className = c; return e; }
+  var SERVICES = [
+    { id: 'fwl', name: 'Full wagon load', desc: 'One wagon of about 60 tonnes between any two goods sheds or sidings.', unit: 'wagon', rate: 35000, note: 'about 400 km' },
+    { id: 'pl', name: 'Part load', desc: 'For shipments under 10 tonnes. Your cargo shares a wagon with others on the same lane.', unit: 'tonne', rate: 1400 },
+    { id: 'fr', name: 'Full rake', desc: 'A full train of about 58 wagons (around 3,500 tonnes) with a dedicated rake coordinator.', unit: 'rake', rate: 1600000, note: 'about 400 km' },
+    { id: 'cr', name: 'Container by rail', desc: '20-ft and 40-ft containers between Mundra, JN Port and inland container depots.', unit: '20-ft container', rate: 20000 },
+    { id: 'trk', name: 'First and last mile trucking', desc: 'Truck pickup from your plant to the siding and delivery from the destination terminal.', unit: 'km', rate: 45 },
+    { id: 'doc', name: 'Tracking and documents', desc: 'Live status page, railway receipt handling and SMS alerts when a consignment is delayed.', unit: 'booking', rate: 500 },
+    { id: 'cus', name: 'Other charge', unit: 'unit', rate: 0 }
+  ];
+  var svc = function (id) { return SERVICES.filter(function (s) { return s.id === id; })[0]; };
+  var rs = function (p) { return '\u20B9' + (p / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+
+  /* menu */
+  $('menu').addEventListener('click', function () { var o = $('nav').classList.toggle('open'); this.setAttribute('aria-expanded', o); });
+  $('nav').addEventListener('click', function (e) { if (e.target.tagName === 'A') { $('nav').classList.remove('open'); $('menu').setAttribute('aria-expanded', 'false'); } });
+
+  /* services table and enquiry list */
+  var sb = $('svcRows'), sel = $('eSvc');
+  sel.appendChild(new Option('Choose a service', ''));
+  SERVICES.slice(0, 6).forEach(function (s) {
+    var tr = el('tr'), a = el('a', 'Book this service', 'btn'), b = el('td');
+    tr.appendChild(el('td', s.name)); tr.appendChild(el('td', s.desc));
+    var p = el('td', '\u20B9' + s.rate.toLocaleString('en-IN') + ' per ' + s.unit);
+    if (s.note) p.appendChild(el('div', s.note, 'small'));
+    tr.appendChild(p);
+    a.href = '#contact'; a.setAttribute('data-s', s.id); b.appendChild(a); tr.appendChild(b);
+    sb.appendChild(tr);
+    sel.appendChild(new Option(s.name, s.id));
+  });
+  sb.addEventListener('click', function (e) { var s = e.target.getAttribute('data-s'); if (s) sel.value = s; });
+
+  /* dashboard charts (sample data) */
+  function bars(id, rows, suffix) {
+    var box = $(id), max = Math.max.apply(null, rows.map(function (r) { return r[1]; }));
+    rows.forEach(function (r) {
+      var d = el('div', null, 'bar'), s = el('span'), i = el('i');
+      i.style.width = (r[1] / max * 100) + '%'; s.appendChild(i);
+      d.appendChild(el('div', r[0])); d.appendChild(s);
+      d.appendChild(el('em', r[1].toLocaleString('en-IN') + (suffix || '')));
+      box.appendChild(d);
+    });
+  }
+  bars('cMonth', [['Apr', 980], ['May', 1040], ['Jun', 1105], ['Jul', 1170], ['Aug', 1210], ['Sep', 1250]]);
+  bars('cMix', [['Coal', 38], ['Cement', 18], ['Steel', 16], ['Fertiliser', 12], ['Containers', 10], ['Other', 6]], '%');
+  bars('cDelay', [['Terminal congestion', 18], ['Wagon shortage', 12], ['Paperwork', 8], ['Weather', 7], ['Other', 5]]);
+
+  /* tracking (sample consignments) */
+  var TRK = {
+    TRK1018: { st: 'Delayed', cls: 'bad', pct: 55, route: 'Jamshedpur to Vadodara', cargo: 'Steel coils', qty: '3 wagons (about 180 tonnes)', at: 'Nagpur Junction yard', eta: '19 Oct 2026 (2 days late)', note: 'Held at the yard because of terminal congestion.' },
+    TRK1025: { st: 'In transit', cls: 'warn', pct: 40, route: 'Korba to Surat', cargo: 'Coal', qty: '1 rake (about 3,500 tonnes)', at: 'Near Katni', eta: '17 Oct 2026', note: 'Running on time.' },
+    TRK1001: { st: 'Delivered', cls: 'ok', pct: 100, route: 'Mundra to Dadri', cargo: 'Containers', qty: '12 x 20-ft containers', at: 'Dadri terminal', eta: 'Delivered 9 Oct 2026', note: 'Delivered by the promised date.' }
+  };
+  function track(id) {
+    id = id.trim().toUpperCase();
+    var box = $('tOut'), t = TRK[id];
+    box.textContent = '';
+    if (!id) { box.textContent = 'Enter a consignment ID to see its status.'; return; }
+    if (!t) { box.textContent = 'No consignment found for ' + id + '. Check the ID on your booking confirmation or try a sample.'; return; }
+    var h = el('p'), pr = el('div', null, 'prog'), i = el('i'), dl = el('dl', null, 'kv');
+    h.style.margin = '0'; h.appendChild(el('span', t.st, 'badge ' + t.cls)); h.appendChild(document.createTextNode(' ' + id));
+    i.style.width = t.pct + '%'; pr.appendChild(i); pr.setAttribute('role', 'img'); pr.setAttribute('aria-label', t.pct + ' percent of the journey complete');
+    [['Route', t.route], ['Cargo', t.cargo], ['Quantity', t.qty], ['Last seen', t.at], ['Arrival', t.eta], ['Note', t.note]].forEach(function (r) { dl.appendChild(el('dt', r[0])); dl.appendChild(el('dd', r[1])); });
+    box.appendChild(h); box.appendChild(pr); box.appendChild(dl);
+  }
+  $('tForm').addEventListener('submit', function (e) { e.preventDefault(); track($('tId').value); });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('[data-id]') : null;
+    if (a) { $('tId').value = a.getAttribute('data-id'); track(a.getAttribute('data-id')); }
+  });
+
+  /* enquiry form: opens the visitor's email app with the details filled in */
+  $('eForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var s = svc($('eSvc').value), body =
+      'Name: ' + $('eName').value + '\nCompany: ' + $('eCo').value + '\nEmail: ' + $('eMail').value + '\nPhone: ' + $('ePhone').value +
+      '\nService: ' + (s ? s.name : '') + '\n\n' + $('eMsg').value;
+    $('emsg').textContent = 'Your email app should open with the enquiry ready to send. If it does not, write to jaikee.kumar_mba25@gsv.ac.in.';
+    location.href = 'mailto:jaikee.kumar_mba25@gsv.ac.in?subject=' + encodeURIComponent('Rail freight enquiry: ' + (s ? s.name : '')) + '&body=' + encodeURIComponent(body);
+  });
+
+  /* ---------- bill generator ---------- */
+  var items = [];
+  function getSeq() { try { return parseInt(localStorage.getItem('rakelink-bill-seq'), 10) || 1001; } catch (e) { return 1001; } }
+  function setSeq(n) { try { localStorage.setItem('rakelink-bill-seq', n); } catch (e) {} }
+  function today() { var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
+  function fmtDate(v) { return v ? new Date(v + 'T00:00:00').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : ''; }
+
+  var ONES = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+  var TENS = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+  function two(x) { return x < 20 ? ONES[x] : TENS[Math.floor(x / 10)] + (x % 10 ? ' ' + ONES[x % 10] : ''); }
+  function three(x) { return (x > 99 ? ONES[Math.floor(x / 100)] + ' Hundred' + (x % 100 ? ' ' : '') : '') + (x % 100 ? two(x % 100) : ''); }
+  function words(n) {
+    if (n === 0) return 'Zero';
+    var out = '', cr = Math.floor(n / 1e7); n %= 1e7;
+    var lk = Math.floor(n / 1e5); n %= 1e5;
+    var th = Math.floor(n / 1e3); n %= 1e3;
+    if (cr) out += words(cr) + ' Crore ';
+    if (lk) out += two(lk) + ' Lakh ';
+    if (th) out += two(th) + ' Thousand ';
+    if (n) out += three(n);
+    return out.trim();
+  }
+  function inWords(p) { var r = Math.floor(p / 100), q = p % 100; return 'Rupees ' + words(r) + (q ? ' and ' + words(q) + ' Paise' : '') + ' Only'; }
+  function put(id, val, ph) { var e = $(id), v = (val || '').trim(); e.textContent = v || ph; e.classList.toggle('empty', !v); }
+
+  function renderEditor() {
+    var box = $('items');
+    box.textContent = '';
+    var opts = SERVICES.map(function (s) { return '<option value="' + s.id + '">' + s.name + '</option>'; }).join('');
+    items.forEach(function (it, i) {
+      var d = el('div', null, 'item');
+      d.setAttribute('data-i', i);
+      d.innerHTML =
+        '<label>Service<select data-k="svc">' + opts + '</select></label>' +
+        '<label>Details (commodity, route)<input data-k="desc" type="text"></label>' +
+        '<div class="row3"><label>Quantity (<span class="u"></span>)<input data-k="qty" type="number" min="0" step="any"></label>' +
+        '<label>Rate in \u20B9<input data-k="rate" type="number" min="0" step="any"></label>' +
+        '<button type="button" class="btn rm">Remove</button></div><p class="amt"></p>';
+      box.appendChild(d);
+      d.querySelector('[data-k=svc]').value = it.svc;
+      d.querySelector('[data-k=desc]').value = it.desc;
+      d.querySelector('[data-k=qty]').value = it.qty;
+      d.querySelector('[data-k=rate]').value = it.rate;
+      d.querySelector('.u').textContent = svc(it.svc).unit;
+      d.querySelector('.rm').disabled = items.length === 1;
+    });
+    update();
+  }
+
+  function update() {
+    var g = parseFloat($('gst').value) || 0, igst = $('tax').value === 'igst';
+    put('pNo', $('iNo').value, '-');
+    put('pDate', fmtDate($('iDate').value), '-');
+    put('pName', $('cName').value, 'Customer name');
+    put('pCo', $('cCo').value, 'Company');
+    put('pAddr', $('cAddr').value, 'Billing address');
+    put('pGstin', $('cGst').value.trim() ? 'GSTIN ' + $('cGst').value.trim().toUpperCase() : '', 'GSTIN');
+    put('pTrk', $('cTrk').value.trim() ? 'Consignment ' + $('cTrk').value.trim() : '', 'Consignment ID');
+    put('pRoute', $('cRoute').value.trim() ? 'Route: ' + $('cRoute').value.trim() : '', 'Route');
+    $('pSupply').textContent = igst ? 'Interstate supply (IGST)' : 'Supply within Gujarat (CGST and SGST)';
+    $('pNotes').textContent = $('notes').value.trim();
+
+    var body = $('pRows'), subP = 0, n = 0;
+    body.textContent = '';
+    document.querySelectorAll('#items .item').forEach(function (card, i) {
+      var it = items[i], p = Math.round((it.qty || 0) * (it.rate || 0) * 100);
+      card.querySelector('.amt').textContent = 'Line amount ' + rs(p);
+      if (p <= 0) return;
+      subP += p; n++;
+      var tr = el('tr'), s = svc(it.svc), c2 = el('td');
+      c2.appendChild(el('b', s.name));
+      if (it.desc.trim()) c2.appendChild(el('div', it.desc.trim(), 'small'));
+      tr.appendChild(el('td', n)); tr.appendChild(c2);
+      tr.appendChild(el('td', it.qty + ' ' + s.unit, 'num'));
+      tr.appendChild(el('td', rs(Math.round(it.rate * 100)), 'num'));
+      tr.appendChild(el('td', rs(p), 'num'));
+      body.appendChild(tr);
+    });
+    if (!n) {
+      var e = el('tr'), td = el('td', 'Add an item with a quantity and rate.', 'empty');
+      td.colSpan = 5; e.appendChild(td); body.appendChild(e);
+    }
+    var gstP = Math.round(subP * g / 100), half = Math.floor(gstP / 2);
+    $('tSub').textContent = rs(subP);
+    $('rC').style.display = $('rS').style.display = igst ? 'none' : 'flex';
+    $('rI').style.display = igst ? 'flex' : 'none';
+    $('lC').textContent = 'CGST @ ' + (g / 2) + '%'; $('tC').textContent = rs(half);
+    $('lS').textContent = 'SGST @ ' + (g / 2) + '%'; $('tS').textContent = rs(gstP - half);
+    $('lI').textContent = 'IGST @ ' + g + '%'; $('tI').textContent = rs(gstP);
+    $('tGrand').textContent = rs(subP + gstP);
+    $('pWords').textContent = subP ? inWords(subP + gstP) : '';
+  }
+
+  function resetForm() {
+    ['cName', 'cCo', 'cGst', 'cAddr', 'cTrk', 'cRoute'].forEach(function (id) { $(id).value = ''; });
+    $('iNo').value = 'RL-' + getSeq();
+    $('iDate').value = today();
+    items = [{ svc: 'fwl', desc: '', qty: 1, rate: 35000 }];
+    $('bmsg').textContent = '';
+    renderEditor();
+  }
+
+  $('items').addEventListener('input', function (ev) {
+    var card = ev.target.closest('.item'), k = ev.target.getAttribute('data-k');
+    if (!card || !k) return;
+    var it = items[+card.getAttribute('data-i')];
+    if (k === 'svc') {
+      var s = svc(ev.target.value);
+      it.svc = s.id; it.rate = s.rate;
+      card.querySelector('[data-k=rate]').value = s.rate;
+      card.querySelector('.u').textContent = s.unit;
+    } else if (k === 'desc') { it.desc = ev.target.value; }
+    else { it[k] = parseFloat(ev.target.value) || 0; }
+    update();
+  });
+  $('items').addEventListener('click', function (ev) {
+    if (!ev.target.classList.contains('rm')) return;
+    items.splice(+ev.target.closest('.item').getAttribute('data-i'), 1);
+    renderEditor();
+  });
+  $('addItem').addEventListener('click', function () {
+    items.push({ svc: 'fwl', desc: '', qty: 1, rate: 35000 });
+    renderEditor();
+    var cards = document.querySelectorAll('#items .item');
+    cards[cards.length - 1].querySelector('select').focus();
+  });
+  ['iNo', 'iDate', 'cName', 'cCo', 'cGst', 'cAddr', 'cTrk', 'cRoute', 'gst', 'tax', 'notes'].forEach(function (id) { $(id).addEventListener('input', update); });
+  $('print').addEventListener('click', function () {
+    if (!$('cName').value.trim()) { $('bmsg').textContent = 'Enter the customer name before printing.'; $('cName').focus(); return; }
+    if (!document.querySelector('#pRows .num')) { $('bmsg').textContent = 'Add at least one item with a quantity and rate.'; return; }
+    $('bmsg').textContent = '';
+    window.print();
+  });
+  $('reset').addEventListener('click', function () { setSeq(getSeq() + 1); resetForm(); });
+  resetForm();
+})();
+</script>
 </body>
 </html>
